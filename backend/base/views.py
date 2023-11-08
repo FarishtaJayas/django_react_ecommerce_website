@@ -20,14 +20,20 @@ def getProducts(request):
     return Response(serializer.data)
 
 
+# @api_view(['GET'])
+# def getProduct(request, pk):
+#     selectedProduct = None
+#     for product in products:
+#         if product['_id'] == pk:
+#             selectedProduct = product
+
+#     if selectedProduct:
+#         return Response(selectedProduct)
+#     else:
+#         return Response("Unable to find product")
+
 @api_view(['GET'])
 def getProduct(request, pk):
-    selectedProduct = None
-    for product in products:
-        if product['_id'] == pk:
-            selectedProduct = product
-
-    if selectedProduct:
-        return Response(selectedProduct)
-    else:
-        return Response("Unable to find product")
+    selectedProduct = Product.objects.get(_id=pk)
+    serializer = ProductSerializer(selectedProduct, many=False)
+    return Response(serializer.data)
